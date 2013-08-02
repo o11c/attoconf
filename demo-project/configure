@@ -23,7 +23,7 @@ import os
 import sys
 
 from attoconf.version import require_version, string as version_string
-require_version(0, 0)
+require_version(0, 1)
 
 from attoconf.core import Project, Build
 
