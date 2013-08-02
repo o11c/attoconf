@@ -1,0 +1,11 @@
+Attoconf itself is released under the GNU General Public License (GPL).
+
+As a derivative work, this also applies to the 'configure' script shipped
+with programs that use the attoconf library. This is a deliberate decision:
+while 'configure' is program-specific options, many programs will want
+similar options.
+
+However, the actual programs build using attoconf are not derivative works
+and thus may be released under any license.
+
+The GPL is available in the file gpl-3.0.txt
