@@ -1,0 +1,16 @@
+language: python
+python:
+  - "2.7"
+  - "pypy"
+install: ":"
+script: ./test-everything.sh
+
+notifications:
+  email:
+    on_success: changed
+    on_failure: always
+  irc:
+    channels:   "chat.freenode.net#tmwa"
+    on_success: always
+    on_failure: always
+    use_notice: true
