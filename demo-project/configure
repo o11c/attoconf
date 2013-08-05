@@ -23,17 +23,53 @@ import os
 import sys
 
 from attoconf.version import require_version, string as version_string
-require_version(0, 1)
+require_version(0, 2)
 
-from attoconf.core import Project, Build
+from attoconf.classy import add_slots
+from attoconf.lib.c import C
+from attoconf.lib.install import Install
+from attoconf.lib.make import Make
+
+@add_slots
+class Configuration(C, Install, Make):
+    # usually you'll only have vars, features, and packages
+    # the rest should only be inherited
+    def __init__(self, srcdir):
+        super(Configuration, self).__init__(srcdir)
+
+    def general(self):
+        super(Configuration, self).general()
+
+    def paths(self):
+        super(Configuration, self).paths()
+
+    def arches(self):
+        super(Configuration, self).arches()
+
+    def vars(self):
+        super(Configuration, self).vars()
+
+    def features(self):
+        super(Configuration, self).features()
+
+    def packages(self):
+        super(Configuration, self).packages()
+
+    if 0:
+        def tests(self):
+            super(Configuration, self).tests()
+
+    def post(self):
+        super(Configuration, self).post()
+
 
 def main():
-    print('Using', version_string)
-    src = Project(os.path.dirname(sys.argv[0]))
-    # customizations go here
-
-    # the rest shouldn't change
-    build = Build(src, '.')
+    proj = Configuration(os.path.dirname(sys.argv[0]))
+    proj.set_package('attoconf-demo', version_string.split(' ')[1], 'Demo project for attoconf')
+    proj.jiggle()
+    build = proj.build('.')
     build.configure(sys.argv[1:], os.environ)
 
-main()
+
+if __name__ == '__main__':
+    main()

@@ -7,7 +7,7 @@ major = 0
 
 # Incremented for releases with compatible API additions.
 # This is the number that is usually incremented.
-minor = 1
+minor = 2
 
 # Incremented if there is a bugfix release.
 # Might not be contiguous.

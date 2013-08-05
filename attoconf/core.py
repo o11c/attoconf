@@ -28,7 +28,7 @@ Option = namedtuple('Option', ['type', 'init'])
 class ArgumentError(Exception): pass
 
 def as_var(name):
-    return name.lstrip('-').upper()
+    return name.lstrip('-').replace('-', '_').upper()
 
 def trim_trailing_slashes(path):
     p, s = os.path.split(path)
@@ -95,7 +95,9 @@ class Project(object):
         if name in self.options:
             raise KeyError(name)
         self.options[name] = Option(init=init, type=type)
-        self.checks.append(lambda bld: check(bld, bld.vars[as_var(name)][0]))
+        if check is not None:
+            self.checks.append(
+                    lambda bld: check(bld, bld.vars[as_var(name)][0]) )
         if help_var is None:
             help_var = as_var(name)
         if help_def is None:
@@ -125,15 +127,15 @@ class Build(object):
     ''' A Build is a directory and set of options applied to a Project.
     '''
     __slots__ = (
-            'bindir',
+            'builddir',
             'project',
             'vars',
     )
-    def __init__(self, project, bindir):
+    def __init__(self, project, builddir):
         ''' A Build is initially constructed from a project and a build dir.
         '''
         self.project = project
-        self.bindir = trim_trailing_slashes(bindir)
+        self.builddir = trim_trailing_slashes(builddir)
         self.vars = {as_var(k): (o.init, 'default')
                 for k, o in project.options.iteritems()}
 
@@ -173,7 +175,9 @@ class Build(object):
         ''' First apply variables from the environment,
             then call apply_arg() a bunch of times, then finish().
         '''
-        for k in self.vars:
+        for k in self.project.options:
+            if k != as_var(k):
+                continue
             val = env.get(k)
             if val is not None:
                 self.vars[k] = (self.project.options[k].type(val), 'environment')
@@ -186,5 +190,11 @@ class Build(object):
     def relative_source(self):
         ''' Return a relative path from the build tree to the source tree.
         '''
-        return os.path.relpath(os.path.realpath(self.project.srcdir),
-                os.path.realpath(self.bindir))
+        srcdir = self.project.srcdir
+        builddir = self.builddir
+        if os.path.isabs(srcdir):
+            return srcdir
+        if os.path.isabs(builddir):
+            return os.path.realpath(srcdir)
+        return os.path.relpath(os.path.realpath(srcdir),
+                os.path.realpath(builddir))

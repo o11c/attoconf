@@ -47,7 +47,8 @@ class TestProject(unittest.TestCase):
                 help='display some subset of help', hidden=False,
                 help_var='TYPE')
         proj.help.add_option('--help=hidden',
-                'display help you should never ever ever care about', True)
+                help='display help you should never ever ever care about',
+                hidden=True)
         proj.add_option('--foo', init='asdf',
                 type=str, check=None,
                 help='set frob target', hidden=False)
@@ -89,7 +90,7 @@ General:
         proj = Project('foo/')
         build = Build(proj, 'bar/')
         self.assertEquals(build.project.srcdir, 'foo')
-        self.assertEquals(build.bindir, 'bar')
+        self.assertEquals(build.builddir, 'bar')
         self.assertEquals(build.relative_source(), '../foo')
 
     def test_configure(self):
@@ -119,7 +120,12 @@ General:
                 help='help for string VAR', hidden=False)
 
         build = Build(proj, '.')
-        build.configure(['--alias'], {'VAR': 'value'})
+        build.configure(['--alias'],
+                {
+                    'VAR': 'value',
+                    'QUX': 'a',
+                    '--qux': 'b',
+                })
         self.assertEqual(build.vars,
                 {
                     'FOO': ('B', 'command-line'),

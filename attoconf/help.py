@@ -140,23 +140,23 @@ class Help(object):
         '''
         self.sections = []
 
-    def add_text(self, text, hidden):
+    def add_text(self, help, hidden):
         ''' Add a header line.
 
             This creates a new section if the last line wasn't a header.
         '''
         if not self.sections or self.sections[-1].options:
             self.sections.append(HelpSection())
-        self.sections[-1].add_text(text, hidden)
+        self.sections[-1].add_text(help, hidden)
 
-    def add_option(self, name, text, hidden):
+    def add_option(self, name, help, hidden):
         ''' Add an option with its description to the current section.
 
             This creates a new section only if it is first.
         '''
         if not self.sections:
             self.sections.append(HelpSection())
-        self.sections[-1].add_option(name, text, hidden)
+        self.sections[-1].add_option(name, help, hidden)
 
     def print(self, file, hidden, width=0):
         ''' Print all the help at the given level of hidden-ness.

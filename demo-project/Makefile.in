@@ -1,0 +1,9 @@
+vpath %.c ${SRC_DIR}
+vpath %.h ${SRC_DIR}
+
+hello: main.o hello.o
+main.o: main.c hello.h
+hello.o: hello.c hello.h
+
+clean:
+	rm -f hello main.o hello.o
