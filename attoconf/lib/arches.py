@@ -27,14 +27,14 @@ def host(build, HOST):
     if HOST is None:
         BUILD, origin = build.vars['BUILD']
         if origin != 'default':
-            origin = 'derived from BUILD'
+            origin = 'derived'
         build.vars['HOST'] = (BUILD, origin)
 
 def target(build, TARGET):
     if TARGET is None:
         HOST, origin = build.vars['HOST']
         if origin != 'default':
-            origin = 'derived from HOST'
+            origin = 'derived'
         build.vars['TARGET'] = (HOST, origin)
 
 class Arches2(ClassyProject):

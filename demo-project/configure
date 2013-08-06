@@ -28,10 +28,11 @@ require_version(0, 2)
 from attoconf.classy import add_slots
 from attoconf.lib.c import C
 from attoconf.lib.install import Install
+from attoconf.lib.config_hash import ConfigHash
 from attoconf.lib.make import Make
 
 @add_slots
-class Configuration(C, Install, Make):
+class Configuration(C, Install, ConfigHash, Make):
     # usually you'll only have vars, features, and packages
     # the rest should only be inherited
     def __init__(self, srcdir):

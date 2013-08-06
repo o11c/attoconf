@@ -39,63 +39,63 @@ def exec_prefix(build, EPREFIX):
     if EPREFIX is None:
         PREFIX, origin = build.vars['PREFIX']
         if origin != 'default':
-            origin = 'derived from PREFIX'
+            origin = 'derived'
         build.vars['EPREFIX'] = (PREFIX, origin)
 
 def bindir(build, DIR):
     if DIR is None:
         EPREFIX, origin = build.vars['EPREFIX']
         if origin != 'default':
-            origin = 'derived from EPREFIX'
+            origin = 'derived'
         build.vars['BINDIR'] = (os.path.join(EPREFIX, 'bin'), origin)
 
 def sbindir(build, DIR):
     if DIR is None:
         EPREFIX, origin = build.vars['EPREFIX']
         if origin != 'default':
-            origin = 'derived from EPREFIX'
+            origin = 'derived'
         build.vars['SBINDIR'] = (os.path.join(EPREFIX, 'sbin'), origin)
 
 def libexecdir(build, DIR):
     if DIR is None:
         EPREFIX, origin = build.vars['EPREFIX']
         if origin != 'default':
-            origin = 'derived from EPREFIX'
+            origin = 'derived'
         build.vars['LIBEXECDIR'] = (os.path.join(EPREFIX, 'libexec'), origin)
 
 def sysconfdir(build, DIR):
     if DIR is None:
         PREFIX, origin = build.vars['PREFIX']
         if origin != 'default':
-            origin = 'derived from PREFIX'
+            origin = 'derived'
         build.vars['SYSCONFDIR'] = (os.path.join(PREFIX, 'etc'), origin)
 
 def sharedstatedir(build, DIR):
     if DIR is None:
         PREFIX, origin = build.vars['PREFIX']
         if origin != 'default':
-            origin = 'derived from PREFIX'
+            origin = 'derived'
         build.vars['SHAREDSTATEDIR'] = (os.path.join(PREFIX, 'com'), origin)
 
 def localstatedir(build, DIR):
     if DIR is None:
         PREFIX, origin = build.vars['PREFIX']
         if origin != 'default':
-            origin = 'derived from PREFIX'
+            origin = 'derived'
         build.vars['LOCALSTATEDIR'] = (os.path.join(PREFIX, 'var'), origin)
 
 def libdir(build, DIR):
     if DIR is None:
         EPREFIX, origin = build.vars['EPREFIX']
         if origin != 'default':
-            origin = 'derived from EPREFIX'
+            origin = 'derived'
         build.vars['LIBDIR'] = (os.path.join(EPREFIX, 'lib'), origin)
 
 def includedir(build, DIR):
     if DIR is None:
         PREFIX, origin = build.vars['PREFIX']
         if origin != 'default':
-            origin = 'derived from PREFIX'
+            origin = 'derived'
         build.vars['INCLUDEDIR'] = (os.path.join(PREFIX, 'include'), origin)
 
 def oldincludedir(build, DIR):
@@ -105,14 +105,14 @@ def datarootdir(build, DIR):
     if DIR is None:
         PREFIX, origin = build.vars['PREFIX']
         if origin != 'default':
-            origin = 'derived from PREFIX'
+            origin = 'derived'
         build.vars['DATAROOTDIR'] = (os.path.join(PREFIX, 'share'), origin)
 
 def datadir(build, DIR):
     if DIR is None:
         DATAROOTDIR, origin = build.vars['DATAROOTDIR']
         if origin != 'default':
-            origin = 'derived from DATAROOTDIR'
+            origin = 'derived'
         build.vars['DATADIR'] = (DATAROOTDIR, origin)
 
 def packagedatadir(build, DIR):
@@ -120,28 +120,28 @@ def packagedatadir(build, DIR):
         DATADIR, origin = build.vars['DATADIR']
         PACKAGE, prigin = build.vars['PACKAGE']
         if origin != 'default' or prigin != 'default':
-            origin = 'derived from DATADIR and PACKAGE'
+            origin = 'derived'
         build.vars['DATADIR'] = (os.path.join(DATADIR, PACKAGE), origin)
 
 def infodir(build, DIR):
     if DIR is None:
         DATAROOTDIR, origin = build.vars['DATAROOTDIR']
         if origin != 'default':
-            origin = 'derived from DATAROOTDIR'
+            origin = 'derived'
         build.vars['INFODIR'] = (os.path.join(DATAROOTDIR, 'info'), origin)
 
 def localedir(build, DIR):
     if DIR is None:
         DATAROOTDIR, origin = build.vars['DATAROOTDIR']
         if origin != 'default':
-            origin = 'derived from DATAROOTDIR'
+            origin = 'derived'
         build.vars['LOCALEDIR'] = (os.path.join(DATAROOTDIR, 'locale'), origin)
 
 def mandir(build, DIR):
     if DIR is None:
         DATAROOTDIR, origin = build.vars['DATAROOTDIR']
         if origin != 'default':
-            origin = 'derived from DATAROOTDIR'
+            origin = 'derived'
         build.vars['MANDIR'] = (os.path.join(DATAROOTDIR, 'man'), origin)
 
 def docdir(build, DIR):
@@ -149,35 +149,35 @@ def docdir(build, DIR):
         DATAROOTDIR, origin = build.vars['DATAROOTDIR']
         PACKAGE, origin2 = build.vars['PACKAGE']
         if origin != 'default' or origin2 != 'default':
-            origin = 'derived from DATAROOTDIR and PACKAGE'
+            origin = 'derived'
         build.vars['DOCDIR'] = (os.path.join(DATAROOTDIR, 'doc', PACKAGE), origin)
 
 def htmldir(build, DIR):
     if DIR is None:
         DOCDIR, origin = build.vars['DOCDIR']
         if origin != 'default':
-            origin = 'derived from DOCDIR'
+            origin = 'derived'
         build.vars['HTMLDIR'] = (DOCDIR, origin)
 
 def dvidir(build, DIR):
     if DIR is None:
         DOCDIR, origin = build.vars['DOCDIR']
         if origin != 'default':
-            origin = 'derived from DOCDIR'
+            origin = 'derived'
         build.vars['DVIDIR'] = (DOCDIR, origin)
 
 def pdfdir(build, DIR):
     if DIR is None:
         DOCDIR, origin = build.vars['DOCDIR']
         if origin != 'default':
-            origin = 'derived from DOCDIR'
+            origin = 'derived'
         build.vars['PDFDIR'] = (DOCDIR, origin)
 
 def psdir(build, DIR):
     if DIR is None:
         DOCDIR, origin = build.vars['DOCDIR']
         if origin != 'default':
-            origin = 'derived from DOCDIR'
+            origin = 'derived'
         build.vars['PSDIR'] = (DOCDIR, origin)
 
 
