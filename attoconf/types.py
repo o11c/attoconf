@@ -80,10 +80,14 @@ class ShellList(object):
 
 def shell_word(s):
     if s != shell_quote(s):
-        if s == '':
-            return "''"
         raise ValueError('not a word: %r' % s)
     return s
+
+
+def shell_partial_word(s):
+    if s == '':
+        return s
+    return shell_word(s)
 
 
 def quoted_string(s):

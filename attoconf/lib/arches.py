@@ -20,6 +20,9 @@ from __future__ import print_function, division, absolute_import
 from ..classy import ClassyProject
 from ..types import triple
 
+def build(build, BUILD):
+    pass
+
 def host(build, HOST):
     if HOST is None:
         BUILD, origin = build.vars['BUILD']
@@ -41,7 +44,7 @@ class Arches2(ClassyProject):
         super(Arches2, self).arches()
         self.add_help('System types:', hidden=False)
         self.add_option('--build', init=None,
-                type=triple, check=None,
+                type=triple, check=build,
                 help='configure for building on BUILD', hidden=False,
                 help_def='native')
         self.add_option('--host', init=None,

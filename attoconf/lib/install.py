@@ -23,6 +23,18 @@ from ..classy import ClassyProject
 from ..types import shell_word, version, filepath, quoted_string
 
 
+def package(build, PACKAGE):
+    pass
+
+def package_version(build, VERSION):
+    pass
+
+def package_name(build, NAME):
+    pass
+
+def prefix(build, PREFIX):
+    pass
+
 def exec_prefix(build, EPREFIX):
     if EPREFIX is None:
         PREFIX, origin = build.vars['PREFIX']
@@ -85,6 +97,9 @@ def includedir(build, DIR):
         if origin != 'default':
             origin = 'derived from PREFIX'
         build.vars['INCLUDEDIR'] = (os.path.join(PREFIX, 'include'), origin)
+
+def oldincludedir(build, DIR):
+    pass
 
 def datarootdir(build, DIR):
     if DIR is None:
@@ -182,16 +197,16 @@ class Install(ClassyProject):
     def general(self):
         super(Install, self).general()
         self.add_option('--package', init=self.package,
-                type=shell_word, check=None,
+                type=shell_word, check=package,
                 help='Short name of this package (don\'t change!)',
                 hidden=True)
         self.add_option('--package-version', init=self.package_version,
-                type=version, check=None,
+                type=version, check=package_version,
                 help='Version of this package (change in configure)',
                 hidden=True,
                 help_var='VERSION')
         self.add_option('--package-name', init=self.package_name,
-                type=quoted_string, check=None,
+                type=quoted_string, check=package_name,
                 help='Long name of this package (don\'t change)',
                 hidden=True,
                 help_var='NAME')
@@ -201,7 +216,7 @@ class Install(ClassyProject):
 
         self.add_help('Installation directories:', hidden=False)
         self.add_option('--prefix', init='/usr/local',
-                type=filepath, check=None,
+                type=filepath, check=prefix,
                 help='install architecture-independent files in PREFIX',
                 hidden=False)
         self.add_option('--exec-prefix', init=None,
@@ -245,7 +260,7 @@ class Install(ClassyProject):
                 help='C header files', hidden=False,
                 help_var='DIR', help_def='PREFIX/include')
         self.add_option('--oldincludedir', init='/usr/include',
-                type=filepath, check=None,
+                type=filepath, check=oldincludedir,
                 help='C header files for non-gcc', hidden=False,
                 help_var='DIR')
         self.add_option('--datarootdir', init=None,

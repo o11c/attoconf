@@ -94,15 +94,21 @@ class Project(object):
         '''
         if name in self.options:
             raise KeyError(name)
-        assert type.__module__ == 'attoconf.types', '%s.%s' % (type.__module__, type.__name__)
-        if var is None:
-            var = as_var(name)
+        if check is not None:
+            assert type.__module__ == 'attoconf.types'
+            if var is None:
+                var = as_var(name)
+        else:
+            # used by some tests ... should this be fixed there instead?
+            if help_var is None:
+                help_var = as_var(name)
         if init is not None:
             init = type(init)
         self.options[name] = Option(init=init, type=type, var=var)
         if check is not None:
             self.checks.append(
-                    lambda bld: check(bld, bld.vars[var][0]) )
+                    lambda bld: check(bld, **{help_var: bld.vars[var][0]}) )
+
         if help_var is None:
             help_var = var
         if help_def is None:
@@ -144,7 +150,8 @@ class Build(object):
         self.project = project
         self.builddir = trim_trailing_slashes(builddir)
         self.vars = {o.var: (o.init, 'default')
-                for o in project.options.itervalues()}
+                for o in project.options.itervalues()
+                if o.var is not None}
 
     def apply_arg(self, arg):
         ''' Parse a single argument, expanding aliases.

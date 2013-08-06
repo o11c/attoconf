@@ -45,13 +45,6 @@ class MakeHook(object):
             out.write('\n')
             # TODO preserve *original* order?
             for var, (val, origin) in sorted(build.vars.iteritems()):
-                if val is None:
-                    if origin == 'default':
-                        continue
-                    # is it a good idea for Nones to survive this long?
-                    # especially conditional ones ...
-                    var = '# ' + var
-                    val = 'not defined'
                 out.write('%s = %s # %s\n' % (var, val, origin))
             if self.infile is not None:
                 out.write('\n# The rest was copied from %s\n' % self.infile)

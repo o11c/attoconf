@@ -20,7 +20,7 @@ from __future__ import print_function, division, absolute_import
 import unittest
 
 from attoconf.core import Project, Build
-from attoconf.types import uint, shell_word
+from attoconf.types import uint, shell_word, shell_partial_word
 
 from cStringIO import StringIO
 import sys
@@ -95,14 +95,14 @@ General:
         self.assertEquals(build.relative_source(), '../foo')
 
     def test_configure(self):
-        def check_foo(bld, foo):
-            self.assertEqual(foo, 'B')
-        def check_bar(bld, bar):
-            self.assertEqual(bar, 1)
-        def check_qux(bld, qux):
-            self.assertEqual(qux, None)
-        def check_var(bld, var):
-            self.assertEqual(var, 'value')
+        def check_foo(bld, FOO):
+            self.assertEqual(FOO, 'B')
+        def check_bar(bld, BAR):
+            self.assertEqual(BAR, 1)
+        def check_qux(bld, QUX):
+            self.assertEqual(QUX, None)
+        def check_var(bld, VAR):
+            self.assertEqual(VAR, 'value')
 
         proj = Project('.')
         proj.add_alias('--alias', ['--foo=A', '--bar=1', '--foo=B'],
@@ -117,7 +117,7 @@ General:
                 type=uint, check=check_qux,
                 help='help for int qux', hidden=False)
         proj.add_option('VAR', init='',
-                type=shell_word, check=check_var,
+                type=shell_partial_word, check=check_var,
                 help='help for string VAR', hidden=False)
 
         build = Build(proj, '.')
