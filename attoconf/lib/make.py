@@ -18,7 +18,6 @@
 from __future__ import print_function, division, absolute_import
 
 import os
-from pipes import quote
 
 from ..classy import ClassyProject
 from ..version import string as version_string
@@ -53,13 +52,6 @@ class MakeHook(object):
                     # especially conditional ones ...
                     var = '# ' + var
                     val = 'not defined'
-                elif isinstance(val, list):
-                    val = ' '.join(quote(a) for a in val)
-                elif isinstance(val, str):
-                    val = quote(val)
-                else:
-                    print('Assuming it\'s safe to print an instance of',
-                            type(val).__name__, '...')
                 out.write('%s = %s # %s\n' % (var, val, origin))
             if self.infile is not None:
                 out.write('\n# The rest was copied from %s\n' % self.infile)

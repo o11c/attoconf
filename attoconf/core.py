@@ -19,13 +19,12 @@ from __future__ import print_function, division, absolute_import
 
 from collections import namedtuple
 import os
-import pipes
 import sys
 
 from .help import Help
 
 # Nothing to see here. Move along.
-Option = namedtuple('Option', ['type', 'init'])
+Option = namedtuple('Option', ['type', 'init', 'var'])
 class ArgumentError(Exception): pass
 
 def as_var(name):
@@ -77,7 +76,7 @@ class Project(object):
         self.help.add_option(key, help, hidden)
 
     def add_option(self, name, init, type, check,
-            help, hidden,
+            help, hidden, var=None,
             help_var=None, help_def=None):
         ''' Add an actual option.
 
@@ -96,16 +95,18 @@ class Project(object):
         if name in self.options:
             raise KeyError(name)
         assert type.__module__ == 'attoconf.types', '%s.%s' % (type.__module__, type.__name__)
-        self.options[name] = Option(init=init, type=type)
+        if var is None:
+            var = as_var(name)
+        if init is not None:
+            init = type(init)
+        self.options[name] = Option(init=init, type=type, var=var)
         if check is not None:
             self.checks.append(
-                    lambda bld: check(bld, bld.vars[as_var(name)][0]) )
+                    lambda bld: check(bld, bld.vars[var][0]) )
         if help_var is None:
-            help_var = as_var(name)
+            help_var = var
         if help_def is None:
             help_def = init
-            if isinstance(help_def, list):
-                help_def = ' '.join(pipes.quote(a) for a in help_def)
         if help_def is not None:
             help = '%s [%s]' % (help, help_def)
 
@@ -142,8 +143,8 @@ class Build(object):
         '''
         self.project = project
         self.builddir = trim_trailing_slashes(builddir)
-        self.vars = {as_var(k): (o.init, 'default')
-                for k, o in project.options.iteritems()}
+        self.vars = {o.var: (o.init, 'default')
+                for o in project.options.itervalues()}
 
     def apply_arg(self, arg):
         ''' Parse a single argument, expanding aliases.
@@ -168,7 +169,7 @@ class Build(object):
         opt = self.project.options.get(k)
         if opt is None:
             raise sys.exit('Unknown option %s' % k)
-        self.vars[as_var(k)] = (opt.type(a), 'command-line')
+        self.vars[opt.var] = (opt.type(a), 'command-line')
 
     def finish(self):
         ''' With the current set of variables, run all the checks
@@ -186,7 +187,8 @@ class Build(object):
                 continue
             val = env.get(k)
             if val is not None:
-                self.vars[k] = (self.project.options[k].type(val), 'environment')
+                opt = self.project.options[k]
+                self.vars[opt.var] = (opt.type(val), 'environment')
 
         for arg in args:
             self.apply_arg(arg)

@@ -20,7 +20,7 @@ from __future__ import print_function, division, absolute_import
 import os
 
 from ..classy import ClassyProject
-from ..types import shell_word, version, filepath
+from ..types import shell_word, version, filepath, quoted_string
 
 
 def exec_prefix(build, EPREFIX):
@@ -28,12 +28,7 @@ def exec_prefix(build, EPREFIX):
         PREFIX, origin = build.vars['PREFIX']
         if origin != 'default':
             origin = 'derived from PREFIX'
-        build.vars['EXEC_PREFIX'] = (PREFIX, origin)
-    # is this a good idea? is there a better way?
-    # how will this interfere with hashing?
-    # at least we don't have to worry about the environment ...
-    build.vars['EPREFIX'] = build.vars['EXEC_PREFIX']
-    del build.vars['EXEC_PREFIX']
+        build.vars['EPREFIX'] = (PREFIX, origin)
 
 def bindir(build, DIR):
     if DIR is None:
@@ -196,7 +191,7 @@ class Install(ClassyProject):
                 hidden=True,
                 help_var='VERSION')
         self.add_option('--package-name', init=self.package_name,
-                type=version, check=None,
+                type=quoted_string, check=None,
                 help='Long name of this package (don\'t change)',
                 hidden=True,
                 help_var='NAME')
@@ -213,7 +208,7 @@ class Install(ClassyProject):
                 type=filepath, check=exec_prefix,
                 help='install architecture-dependent files in EPREFIX',
                 hidden=False,
-                help_var='EPREFIX', help_def='PREFIX')
+                var='EPREFIX', help_def='PREFIX')
 
         self.add_help('Fine tuning of the installation directories:',
                 hidden=False)

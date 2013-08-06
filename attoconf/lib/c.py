@@ -28,7 +28,7 @@ class TestError(Exception):
     pass
 
 def do_exec(build, args):
-    p = subprocess.Popen(args, cwd=build.builddir,
+    p = subprocess.Popen(args.list, cwd=build.builddir,
             stdin=subprocess.PIPE, stdout=subprocess.PIPE,
             stderr=subprocess.STDOUT)
     out, _ = p.communicate()
@@ -200,10 +200,8 @@ def try_compile_link2_cxx(build, body, CXXFLAGS=[], CPPFLAGS=[], LDFLAGS=[], LDL
 def ldflags(build, LDFLAGS):
     pass
 
-def libs(build, LIBS):
-    # Make expects something different
-    build.vars['LDLIBS'] = build.vars['LIBS']
-    del build.vars['LIBS']
+def libs(build, LDLIBS):
+    pass
 
 def cppflags(build, CPPFLAGS):
     pass
@@ -235,7 +233,7 @@ class Link(Arches2):
         self.add_option('LIBS', init=[],
                 type=ShellList, check=libs,
                 help='libraries to pass to the linker, e.g. -l<library>',
-                hidden=False)
+                hidden=False, var='LDLIBS')
 
 class Preprocess(Arches2):
     __slots__ = ()
