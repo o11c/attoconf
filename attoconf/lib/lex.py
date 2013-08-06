@@ -18,7 +18,7 @@
 from __future__ import print_function, division, absolute_import
 
 from ..classy import ClassyProject
-from .c import shell
+from ..types import ShellList
 
 def flex(build, FLEX):
     # TODO actually test it
@@ -29,6 +29,6 @@ class Flex(ClassyProject):
     def vars(self):
         super(Flex, self).vars()
         self.add_option('FLEX', init=['flex'],
-                type=shell, check=flex,
+                type=ShellList, check=flex,
                 help='Lexical analyzer command',
                 hidden=False)

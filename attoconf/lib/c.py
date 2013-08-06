@@ -19,10 +19,10 @@ from __future__ import print_function, division, absolute_import
 
 import errno
 import os
-from shlex import split as shell
 import subprocess
 
 from .arches import Arches2
+from ..types import ShellList
 
 class TestError(Exception):
     pass
@@ -229,11 +229,11 @@ class Link(Arches2):
     def vars(self):
         super(Link, self).vars()
         self.add_option('LDFLAGS', init=[],
-                type=shell, check=ldflags,
+                type=ShellList, check=ldflags,
                 help='linker flags, e.g. -L<lib dir> if you have libraries in a nonstandard directory <lib dir>',
                 hidden=False)
         self.add_option('LIBS', init=[],
-                type=shell, check=libs,
+                type=ShellList, check=libs,
                 help='libraries to pass to the linker, e.g. -l<library>',
                 hidden=False)
 
@@ -242,7 +242,7 @@ class Preprocess(Arches2):
     def vars(self):
         super(Preprocess, self).vars()
         self.add_option('CPPFLAGS', init=[],
-                type=shell, check=cppflags,
+                type=ShellList, check=cppflags,
                 help='C/C++/Objective C preprocessor flags, e.g. -I<include dir> if you have headers in a nonstandard directory <include dir>',
                 hidden=False)
 
@@ -251,10 +251,10 @@ class C(Link, Preprocess):
     def vars(self):
         super(C, self).vars()
         self.add_option('CC', init=['gcc'],
-                type=shell, check=cc,
+                type=ShellList, check=cc,
                 help='C compiler command', hidden=False)
         self.add_option('CFLAGS', init=['-O2', '-g'],
-                type=shell, check=cflags,
+                type=ShellList, check=cflags,
                 help='C compiler flags', hidden=False)
 
 class Cxx(Link, Preprocess):
@@ -262,8 +262,8 @@ class Cxx(Link, Preprocess):
     def vars(self):
         super(Cxx, self).vars()
         self.add_option('CXX', init=['g++'],
-                type=shell, check=cxx,
+                type=ShellList, check=cxx,
                 help='C++ compiler command', hidden=False)
         self.add_option('CXXFLAGS', init=['-O2', '-g'],
-                type=shell, check=cxxflags,
+                type=ShellList, check=cxxflags,
                 help='C++ compiler flags', hidden=False)

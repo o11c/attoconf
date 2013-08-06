@@ -18,7 +18,7 @@
 from __future__ import print_function, division, absolute_import
 
 from ..classy import ClassyProject
-from .c import shell
+from ..types import ShellList
 
 def bison(build, BISON):
     # TODO actually test it
@@ -29,6 +29,6 @@ class Bison(ClassyProject):
     def vars(self):
         super(Bison, self).vars()
         self.add_option('BISON', init=['bison'],
-                type=shell, check=bison,
+                type=ShellList, check=bison,
                 help='Lexical analyzer command',
                 hidden=False)

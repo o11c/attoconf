@@ -18,15 +18,7 @@
 from __future__ import print_function, division, absolute_import
 
 from ..classy import ClassyProject
-
-def triple(s):
-    # Triples do not, in fact, follow a regular pattern.
-    # Some have only two segments, some appear to have four ...
-    # Also, sometimes a wrong thing is used as a triple.
-    # All we *really* care about is generating the tool names.
-    if s.startswith('-') or s.endswith('-') or '-' not in s[1:-1]:
-        raise ValueError('Probably not a triple')
-    return s
+from ..types import triple
 
 def host(build, HOST):
     if HOST is None:

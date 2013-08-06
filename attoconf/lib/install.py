@@ -20,28 +20,7 @@ from __future__ import print_function, division, absolute_import
 import os
 
 from ..classy import ClassyProject
-from ..core import trim_trailing_slashes
-
-
-def word(s):
-    if ' ' in s:
-        raise ValueError('not a word: %s' % s)
-    return s
-
-
-def version(s):
-    if s.startswith('v'):
-        s = s[1:]
-    [int(b) for b in s.split('.')]
-    return s
-
-
-def filepath(s):
-    s = trim_trailing_slashes(s)
-    # must be absolute *and* canonical
-    if s != os.path.abspath(s):
-        raise ValueError('Not an absolute, canonical pathname: %s' % s)
-    return s
+from ..types import shell_word, version, filepath
 
 
 def exec_prefix(build, EPREFIX):
@@ -208,7 +187,7 @@ class Install(ClassyProject):
     def general(self):
         super(Install, self).general()
         self.add_option('--package', init=self.package,
-                type=word, check=None,
+                type=shell_word, check=None,
                 help='Short name of this package (don\'t change!)',
                 hidden=True)
         self.add_option('--package-version', init=self.package_version,

@@ -20,6 +20,7 @@ from __future__ import print_function, division, absolute_import
 import unittest
 
 from attoconf.core import Project, Build
+from attoconf.types import uint, shell_word
 
 from cStringIO import StringIO
 import sys
@@ -50,10 +51,10 @@ class TestProject(unittest.TestCase):
                 help='display help you should never ever ever care about',
                 hidden=True)
         proj.add_option('--foo', init='asdf',
-                type=str, check=None,
+                type=shell_word, check=None,
                 help='set frob target', hidden=False)
         proj.add_option('--bar', init=None,
-                type=str, check=None,
+                type=shell_word, check=None,
                 help='set frob source', hidden=False,
                 help_def='FOO')
 
@@ -107,16 +108,16 @@ General:
         proj.add_alias('--alias', ['--foo=A', '--bar=1', '--foo=B'],
                 help=None, hidden=False)
         proj.add_option('--foo', init=None,
-                type=str, check=check_foo,
+                type=shell_word, check=check_foo,
                 help='help for string foo', hidden=False)
         proj.add_option('--bar', init=0,
-                type=int, check=check_bar,
+                type=uint, check=check_bar,
                 help='help for int bar', hidden=False)
         proj.add_option('--qux', init=None,
-                type=int, check=check_qux,
+                type=uint, check=check_qux,
                 help='help for int qux', hidden=False)
         proj.add_option('VAR', init='',
-                type=str, check=check_var,
+                type=shell_word, check=check_var,
                 help='help for string VAR', hidden=False)
 
         build = Build(proj, '.')

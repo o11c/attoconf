@@ -95,6 +95,7 @@ class Project(object):
         '''
         if name in self.options:
             raise KeyError(name)
+        assert type.__module__ == 'attoconf.types', '%s.%s' % (type.__module__, type.__name__)
         self.options[name] = Option(init=init, type=type)
         if check is not None:
             self.checks.append(
@@ -125,6 +126,8 @@ class Project(object):
             raise ValueError
         self.help.print(sys.stdout, hidden)
         sys.exit()
+# sneaky
+Project.do_help.im_func.__module__ = 'attoconf.types'
 
 class Build(object):
     ''' A Build is a directory and set of options applied to a Project.
