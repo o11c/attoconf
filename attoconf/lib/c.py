@@ -111,6 +111,7 @@ def try_compile_link_cxx(build, body, CXXFLAGS=[], CPPFLAGS=[], LDFLAGS=[], LDLI
     LDFLAGS = build.vars['LDFLAGS'][0] + LDFLAGS
     LDLIBS = build.vars['LDLIBS'][0] + LDLIBS
     in_ = 'atto-test.cxx'
+    ins = [in_]
     out = 'atto-test'
 
     args = CXX + CXXFLAGS + CPPFLAGS + LDFLAGS + ins + LDLIBS + ['-o', out]
@@ -252,7 +253,7 @@ class C(Link, Preprocess):
         self.add_option('CC', init=['gcc'],
                 type=shell, check=cc,
                 help='C compiler command', hidden=False)
-        self.add_option('CFLAGS', init=[],
+        self.add_option('CFLAGS', init=['-O2', '-g'],
                 type=shell, check=cflags,
                 help='C compiler flags', hidden=False)
 
@@ -263,6 +264,6 @@ class Cxx(Link, Preprocess):
         self.add_option('CXX', init=['g++'],
                 type=shell, check=cxx,
                 help='C++ compiler command', hidden=False)
-        self.add_option('CXXFLAGS', init=[],
+        self.add_option('CXXFLAGS', init=['-O2', '-g'],
                 type=shell, check=cxxflags,
                 help='C++ compiler flags', hidden=False)

@@ -90,10 +90,25 @@ class ClassyProject(Project):
     def features(self):
         ''' Customizations for this package (--enable-*).
         '''
+        self.add_help('Optional Features:', hidden=False)
+        # TODO add '--disable-option-checking'
+        self.help.add_option('--disable-FEATURE',
+                help='do not include FEATURE (same as --enable-FEATURE=no)',
+                hidden=False)
+        self.help.add_option('--enable-FEATURE',
+                help='include FEATURE (same as --enable-FEATURE=yes)',
+                hidden=False)
 
     def packages(self):
         ''' Settings related to dependencies (--with-*).
         '''
+        self.add_help('Optional Packages:', hidden=False)
+        self.help.add_option('--with-PACKAGE',
+                help='use PACKAGE (same as --with-PACKAGE=yes)',
+                hidden=False)
+        self.help.add_option('--without-PACKAGE',
+                help='do not use PACKAGE (same as --with-PACKAGE=no)',
+                hidden=False)
 
     if 0: # not sure if really needed
         def tests(self):

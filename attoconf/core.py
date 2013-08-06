@@ -19,6 +19,7 @@ from __future__ import print_function, division, absolute_import
 
 from collections import namedtuple
 import os
+import pipes
 import sys
 
 from .help import Help
@@ -102,6 +103,8 @@ class Project(object):
             help_var = as_var(name)
         if help_def is None:
             help_def = init
+            if isinstance(help_def, list):
+                help_def = ' '.join(pipes.quote(a) for a in help_def)
         if help_def is not None:
             help = '%s [%s]' % (help, help_def)
 
