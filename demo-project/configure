@@ -22,8 +22,8 @@ from __future__ import print_function, division, absolute_import
 import os
 import sys
 
-from attoconf.version import require_version, string as version_string
-require_version(0, 2)
+from attoconf.version import require_version, part_version
+require_version(0, 5)
 
 from attoconf.classy import add_slots
 from attoconf.lib.c import C
@@ -66,7 +66,7 @@ class Configuration(C, Install, ConfigHash, Make):
 
 def main():
     proj = Configuration(os.path.dirname(sys.argv[0]))
-    proj.set_package('attoconf-demo', version_string.split(' ')[1], 'Demo project for attoconf')
+    proj.set_package('attoconf-demo', part_version, 'Demo project for attoconf')
     proj.jiggle()
     build = proj.build('.')
     build.configure(sys.argv[1:], os.environ)

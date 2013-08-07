@@ -28,7 +28,7 @@ def require_version(major, minor, patch=0):
     ''' Check that this is the right version of attoconf, or die trying.
     '''
 
-    actual = 'Current version: ' + string
+    actual = 'Current version: ' + full_version
     if major != _version.major:
         sys.exit('Unsupported major version: %d\n' % major + actual)
     if minor > _version.minor:
@@ -36,4 +36,5 @@ def require_version(major, minor, patch=0):
     if minor == _version.minor and patch > _version.patch:
         sys.exit('Unsupported patch version: %d.%d.%d\n' % (major, minor, patch) + actual)
 
-string = 'attoconf %d.%d.%d (%s)' % (_version.major, _version.minor, _version.patch, _version.distributor)
+part_version = '%d.%d.%d' % (_version.major, _version.minor, _version.patch)
+full_version = 'attoconf %s (%s)' % (part_version, _version.distributor)

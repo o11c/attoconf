@@ -2,17 +2,18 @@
 
 from distutils.core import setup
 
-from attoconf.version import version_string
+from attoconf.version import part_version
 
 setup(
     name='attoconf',
-    version=version_string,
+    version=part_version,
     description='A small and sensible replacement for GNU autoconf',
     author='Ben Longbons',
     author_email='b.r.longbons@gmail.com',
     url='http://github.com/o11c/attoconf',
     packages=[
         'attoconf',
+        'attoconf.lib',
     ],
     classifiers=[
         'Development Status :: 3 - Alpha',

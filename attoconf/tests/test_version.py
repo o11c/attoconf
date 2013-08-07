@@ -19,13 +19,14 @@ from __future__ import print_function, division, absolute_import
 
 import unittest
 
-from attoconf.version import require_version, string as version_string
+from attoconf.version import require_version, full_version, part_version
 
 class TestVersion(unittest.TestCase):
     def test_parse(self):
         # don't do this
-        name, version, dist = version_string.split(' ', 2)
+        name, version, dist = full_version.split(' ', 2)
         self.assertEqual(name, 'attoconf')
+        self.assertEqual(version, part_version)
         major, minor, patch = [int(x) for x in version.split('.')]
         assert dist.startswith('(')
         assert dist.endswith(')')
