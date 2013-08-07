@@ -7,11 +7,11 @@ major = 0
 
 # Incremented for releases with compatible API additions.
 # This is the number that is usually incremented.
-minor = 3
+minor = 4
 
 # Incremented if there is a bugfix release.
 # Might not be contiguous.
-patch = 4
+patch = 0
 
 # Reserved for distributors and forks.
 # Contains arbitrary text, but no parentheses or newlines.

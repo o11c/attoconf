@@ -44,5 +44,6 @@ class ConfigHash(ClassyProject):
     __slots__ = ()
 
     def post(self):
+        self.order.insert(0, 'CONFIG_HASH')
         self.checks.append(add_config_hash)
         super(ConfigHash, self).post()

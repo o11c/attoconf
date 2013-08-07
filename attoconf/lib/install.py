@@ -121,7 +121,7 @@ def packagedatadir(build, DIR):
         PACKAGE, prigin = build.vars['PACKAGE']
         if origin != 'default' or prigin != 'default':
             origin = 'derived'
-        build.vars['DATADIR'] = (os.path.join(DATADIR, PACKAGE), origin)
+        build.vars['PACKAGEDATADIR'] = (os.path.join(DATADIR, PACKAGE), origin)
 
 def infodir(build, DIR):
     if DIR is None:
@@ -224,6 +224,7 @@ class Install(ClassyProject):
                 help='install architecture-dependent files in EPREFIX',
                 hidden=False,
                 var='EPREFIX', help_def='PREFIX')
+        self.order.append(None)
 
         self.add_help('Fine tuning of the installation directories:',
                 hidden=False)

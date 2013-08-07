@@ -42,16 +42,25 @@ class ClassyProject(Project):
         super(ClassyProject, self).__init__(srcdir)
 
     def jiggle(self):
+        self.order.append(None)
         self.general()
+        self.order.append(None)
         self.paths()
+        self.order.append(None)
         self.arches()
+        self.order.append(None)
         self.vars()
+        self.order.append(None)
         self.features()
+        self.order.append(None)
         self.packages()
+        self.order.append(None)
 
         if 0:
             self.tests()
+            self.order.append(None)
         self.post()
+        self.order.append(None)
 
     def general(self):
         ''' Registration hook for general options (usually unneeded).

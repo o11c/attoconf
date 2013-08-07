@@ -44,6 +44,7 @@ class Project(object):
             'aliases',
             'options',
             'help',
+            'order',
             'checks',
     )
     def __init__(self, srcdir):
@@ -53,6 +54,7 @@ class Project(object):
         self.aliases = {}
         self.options = {}
         self.help = Help()
+        self.order = []
         self.checks = []
 
     def add_help(self, text, hidden):
@@ -106,8 +108,9 @@ class Project(object):
             init = type(init)
         self.options[name] = Option(init=init, type=type, var=var)
         if check is not None:
+            self.order.append(var)
             self.checks.append(
-                    lambda bld: check(bld, **{help_var: bld.vars[var][0]}) )
+                    lambda bld: check(bld, **{help_var: bld.vars[var][0]}))
 
         if help_var is None:
             help_var = var

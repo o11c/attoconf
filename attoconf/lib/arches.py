@@ -20,6 +20,9 @@ from __future__ import print_function, division, absolute_import
 from ..classy import ClassyProject
 from ..types import triple
 
+
+# TODO: see if there's a way to expose them sanely, without using Nones
+# (currently I never emit them: instead I pop the order)
 def build(build, BUILD):
     pass
 
@@ -47,10 +50,12 @@ class Arches2(ClassyProject):
                 type=triple, check=build,
                 help='configure for building on BUILD', hidden=False,
                 help_def='native')
+        self.order.pop()
         self.add_option('--host', init=None,
                 type=triple, check=host,
                 help='cross-compile to build programs to run on HOST',
                 hidden=False, help_def='BUILD')
+        self.order.pop()
 
 # TODO figure out the mro implications when I use this
 class Arches3(Arches2):
@@ -61,3 +66,4 @@ class Arches3(Arches2):
                 type=triple, check=target,
                 help='configure for building compilers for TARGET',
                 hidden=False, help_def='HOST')
+        self.order.pop()
