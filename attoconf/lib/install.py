@@ -20,13 +20,10 @@ from __future__ import print_function, division, absolute_import
 import os
 
 from ..classy import ClassyProject
-from ..types import shell_word, version, filepath, quoted_string
+from ..types import shell_word, filepath, quoted_string
 
 
 def package(build, PACKAGE):
-    pass
-
-def package_version(build, VERSION):
     pass
 
 def package_name(build, NAME):
@@ -187,11 +184,10 @@ class Install(ClassyProject):
     @classmethod
     def slots(cls):
         return super(Install, cls).slots() + (
-                'package', 'package_version', 'package_name')
+                'package', 'package_name')
 
-    def set_package(self, package, version, name):
+    def set_package(self, package, name):
         self.package = package
-        self.package_version = version
         self.package_name = name
 
     def general(self):
@@ -200,11 +196,6 @@ class Install(ClassyProject):
                 type=shell_word, check=package,
                 help='Short name of this package (don\'t change!)',
                 hidden=True)
-        self.add_option('--package-version', init=self.package_version,
-                type=version, check=package_version,
-                help='Version of this package (change in configure)',
-                hidden=True,
-                help_var='VERSION')
         self.add_option('--package-name', init=self.package_name,
                 type=quoted_string, check=package_name,
                 help='Long name of this package (don\'t change)',

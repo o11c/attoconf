@@ -94,14 +94,6 @@ def quoted_string(s):
     return shell_quote(s)
 
 
-def version(s):
-    if s.startswith('v'):
-        s = s[1:]
-    for b in s.split('.'):
-        int(b)
-    return s
-
-
 def filepath(s):
     s = trim_trailing_slashes(s)
     # must be absolute *and* canonical

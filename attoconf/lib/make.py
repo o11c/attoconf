@@ -47,7 +47,7 @@ class MakeHook(object):
                     out.write('\n')
                     continue
                 val, origin = build.vars[var]
-                out.write('%s = %s # %s\n' % (var, val, origin))
+                out.write('# %s\n%s = %s\n' % (origin, var, val))
             if self.infile is not None:
                 out.write('# The rest was copied from %s\n' % self.infile)
                 infile = os.path.join(build.project.srcdir, self.infile)
