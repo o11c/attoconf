@@ -146,6 +146,7 @@ class Build(object):
             'builddir',
             'project',
             'vars',
+            '_seen_args',
     )
     def __init__(self, project, builddir):
         ''' A Build is initially constructed from a project and a build dir.
@@ -155,6 +156,7 @@ class Build(object):
         self.vars = {o.var: (o.init, 'default')
                 for o in project.options.itervalues()
                 if o.var is not None}
+        self._seen_args = []
 
     def apply_arg(self, arg):
         ''' Parse a single argument, expanding aliases.
@@ -174,6 +176,7 @@ class Build(object):
                 raise ArgumentError('Unknown option %s' % arg)
             else:
                 raise ArgumentError('Unknown environment variable %s' % arg)
+        self._seen_args.append(arg)
 
         k, a = arg.split('=', 1)
         opt = self.project.options.get(k)
@@ -187,6 +190,18 @@ class Build(object):
         '''
         for check in self.project.checks:
             check(self)
+        status_file = os.path.join(self.builddir, 'config.status')
+        # open fd to control +x mode
+        status_fd = os.open(status_file, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0777)
+        with os.fdopen(status_fd, 'w') as status:
+            status.write('#!%s\n' % sys.executable)
+            status.write('import os\n')
+            status.write('import sys\n')
+            status.write('old_build_dir = os.path.dirname(sys.argv[0])\n')
+            status.write('configure = os.path.join(old_build_dir, %r, "configure")\n'
+                    % self.relative_source())
+            status.write('os.execvp(configure, [configure] + %r)\n'
+                    % self._seen_args)
 
     def configure(self, args, env):
         ''' First apply variables from the environment,
@@ -210,9 +225,7 @@ class Build(object):
         '''
         srcdir = self.project.srcdir
         builddir = self.builddir
-        if os.path.isabs(srcdir):
-            return srcdir
-        if os.path.isabs(builddir):
+        if os.path.isabs(srcdir) or os.path.isabs(builddir):
             return os.path.realpath(srcdir)
         return os.path.relpath(os.path.realpath(srcdir),
                 os.path.realpath(builddir))

@@ -1,7 +1,8 @@
-Attoconf is A small and sensible replacement for GNU autoconf.
+Attoconf is a small and sensible replacement for GNU autoconf.
 
 Principles:
 * Assume most build environments are sane, and ignore the rest.
+* In the face of ambiguity, refuse the temptation to guess.
 * Never automatically toggle features based on the build environment.
 * Written in python2 for easy editing and wide portability.
 * GPL, but this does not apply to the program being built.
