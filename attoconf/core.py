@@ -200,7 +200,7 @@ class Build(object):
             status.write('old_build_dir = os.path.dirname(sys.argv[0])\n')
             status.write('configure = os.path.join(old_build_dir, %r, "configure")\n'
                     % self.relative_source())
-            status.write('os.execvp(configure, [configure] + %r)\n'
+            status.write('os.execvp(configure, [configure] + %r + sys.argv[1:])\n'
                     % self._seen_args)
 
     def configure(self, args, env):
