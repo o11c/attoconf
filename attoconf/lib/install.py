@@ -186,9 +186,17 @@ class Install(ClassyProject):
         return super(Install, cls).slots() + (
                 'package', 'package_name')
 
-    def set_package(self, package, name):
+    # Compatibility with configure written for attoconf < 0.7
+    # In attoconf 1.0, the positional srcdir argument will go away,
+    # the None default and the .set_package function will be removed.
+    # (Note: when bisecting, always force checkout attoconf!)
+    def __init__(self, srcdir, package=None, package_name=None, **kwargs):
+        super(Install, self).__init__(srcdir=srcdir, **kwargs)
+        self.set_package(package, package_name)
+
+    def set_package(self, package, package_name):
         self.package = package
-        self.package_name = name
+        self.package_name = package_name
 
     def general(self):
         super(Install, self).general()

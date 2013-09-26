@@ -65,10 +65,14 @@ class Make(ClassyProject):
     def slots(cls):
         return super(Make, cls).slots() + ('make_in', 'make_out')
 
-    def __init__(self, srcdir):
-        super(Make, self).__init__(srcdir)
-        self.set_make_infile('Makefile.in')
-        self.set_make_outfile('Makefile') # relative to build dir
+    # compatibility with attoconf < 0.7
+    def __init__(self, srcdir,
+            make_infile='Makefile.in',
+            make_outfile='Makefile',
+            **kwargs):
+        super(Make, self).__init__(srcdir=srcdir, **kwargs)
+        self.set_make_infile(make_infile)
+        self.set_make_outfile(make_outfile) # relative to build dir
 
     def set_make_infile(self, ipath):
         self.make_in = ipath
