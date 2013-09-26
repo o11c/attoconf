@@ -110,7 +110,7 @@ class Project(object):
         if check is not None:
             self.order.append(var)
             self.checks.append(
-                    lambda bld: check(bld, **{help_var: bld.vars[var][0]}))
+                    lambda bld: check(bld, **{help_var: bld.vars[var]}))
 
         if help_var is None:
             help_var = var
@@ -153,7 +153,7 @@ class Build(object):
         '''
         self.project = project
         self.builddir = trim_trailing_slashes(builddir)
-        self.vars = {o.var: (o.init, 'default')
+        self.vars = {o.var: o.init
                 for o in project.options.itervalues()
                 if o.var is not None}
         self._seen_args = OrderedDict()
@@ -184,7 +184,7 @@ class Build(object):
         opt = self.project.options.get(k)
         if opt is None:
             raise sys.exit('Unknown option %s' % k)
-        self.vars[opt.var] = (opt.type(a), 'command-line')
+        self.vars[opt.var] = opt.type(a)
 
     def finish(self):
         ''' With the current set of variables, run all the checks
@@ -216,8 +216,9 @@ class Build(object):
                 continue
             val = env.get(k)
             if val is not None:
+                self._seen_args[k] = val
                 opt = self.project.options[k]
-                self.vars[opt.var] = (opt.type(val), 'environment')
+                self.vars[opt.var] = opt.type(val)
 
         for arg in args:
             self.apply_arg(arg)

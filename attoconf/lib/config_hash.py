@@ -25,15 +25,14 @@ from ..classy import ClassyProject
 
 def calc_hash(build):
     hash = md5()
-    for var, (val, origin), in sorted(build.vars.iteritems()):
-        # origin is not included in the hash
+    for var, val in sorted(build.vars.iteritems()):
         hash.update('%s = %s\n' % (var, val))
     return hash.hexdigest()
 
 
 def add_config_hash(build):
     print('Generating a hash of config options ...')
-    build.vars['CONFIG_HASH'] = (calc_hash(build), 'special')
+    build.vars['CONFIG_HASH'] = calc_hash(build)
 
 
 class ConfigHash(ClassyProject):

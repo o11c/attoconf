@@ -28,17 +28,13 @@ def build(build, BUILD):
 
 def host(build, HOST):
     if HOST is None:
-        BUILD, origin = build.vars['BUILD']
-        if origin != 'default':
-            origin = 'derived'
-        build.vars['HOST'] = (BUILD, origin)
+        BUILD = build.vars['BUILD']
+        build.vars['HOST'] = BUILD
 
 def target(build, TARGET):
     if TARGET is None:
-        HOST, origin = build.vars['HOST']
-        if origin != 'default':
-            origin = 'derived'
-        build.vars['TARGET'] = (HOST, origin)
+        HOST = build.vars['HOST']
+        build.vars['TARGET'] = HOST
 
 class Arches2(ClassyProject):
     __slots__ = ()

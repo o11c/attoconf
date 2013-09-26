@@ -29,7 +29,7 @@ class TemplateHook(object):
         self.outfiles = outfiles
 
     def __call__(self, build):
-        build.vars['SRC_DIR'] = (build.relative_source(), 'special')
+        build.vars['SRC_DIR'] = build.relative_source()
         unseen = set(build.project.order)
         if None in unseen:
             unseen.remove(None)
@@ -42,14 +42,13 @@ class TemplateHook(object):
             for var in build.project.order:
                 if var is None:
                     continue
-                val, origin = build.vars[var]
+                val = build.vars[var]
                 key = '@' + var + '@'
                 if key not in slurpee:
                     continue
                 if var in unseen:
                     unseen.remove(var)
                 slurpee = slurpee.replace(key, str(val))
-                # origin is not so useful, given config.status
             with open(os.path.join(build.builddir, outfile), 'w') as out:
                 out.write(slurpee)
         if unseen:

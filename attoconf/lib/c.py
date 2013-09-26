@@ -62,9 +62,9 @@ class TempFile:
 
 
 def try_compile_c(build, body, CFLAGS=[], CPPFLAGS=[]):
-    CC = build.vars['CC'][0]
-    CFLAGS = build.vars['CFLAGS'][0] + CFLAGS
-    CPPFLAGS = build.vars['CPPFLAGS'][0] + CPPFLAGS
+    CC = build.vars['CC']
+    CFLAGS = build.vars['CFLAGS'] + CFLAGS
+    CPPFLAGS = build.vars['CPPFLAGS'] + CPPFLAGS
     in_ = 'atto-test.c'
     ins = [in_]
     out = 'atto-test.o'
@@ -76,11 +76,11 @@ def try_compile_c(build, body, CFLAGS=[], CPPFLAGS=[]):
         raise TestError(error)
 
 def try_compile_link_c(build, body, CFLAGS=[], CPPFLAGS=[], LDFLAGS=[], LDLIBS=[]):
-    CC = build.vars['CC'][0]
-    CFLAGS = build.vars['CFLAGS'][0] + CFLAGS
-    CPPFLAGS = build.vars['CPPFLAGS'][0] + CPPFLAGS
-    LDFLAGS = build.vars['LDFLAGS'][0] + LDFLAGS
-    LDLIBS = build.vars['LDLIBS'][0] + LDLIBS
+    CC = build.vars['CC']
+    CFLAGS = build.vars['CFLAGS'] + CFLAGS
+    CPPFLAGS = build.vars['CPPFLAGS'] + CPPFLAGS
+    LDFLAGS = build.vars['LDFLAGS'] + LDFLAGS
+    LDLIBS = build.vars['LDLIBS'] + LDLIBS
     in_ = 'atto-test.c'
     ins = [in_]
     out = 'atto-test'
@@ -92,9 +92,9 @@ def try_compile_link_c(build, body, CFLAGS=[], CPPFLAGS=[], LDFLAGS=[], LDLIBS=[
         raise TestError(error)
 
 def try_compile_cxx(build, body, CXXFLAGS=[], CPPFLAGS=[]):
-    CXX = build.vars['CXX'][0]
-    CXXFLAGS = build.vars['CXXFLAGS'][0] + CXXFLAGS
-    CPPFLAGS = build.vars['CPPFLAGS'][0] + CPPFLAGS
+    CXX = build.vars['CXX']
+    CXXFLAGS = build.vars['CXXFLAGS'] + CXXFLAGS
+    CPPFLAGS = build.vars['CPPFLAGS'] + CPPFLAGS
     in_ = 'atto-test.cxx'
     out = 'atto-test.o'
 
@@ -105,11 +105,11 @@ def try_compile_cxx(build, body, CXXFLAGS=[], CPPFLAGS=[]):
         raise TestError(error)
 
 def try_compile_link_cxx(build, body, CXXFLAGS=[], CPPFLAGS=[], LDFLAGS=[], LDLIBS=[]):
-    CXX = build.vars['CXX'][0]
-    CXXFLAGS = build.vars['CXXFLAGS'][0] + CXXFLAGS
-    CPPFLAGS = build.vars['CPPFLAGS'][0] + CPPFLAGS
-    LDFLAGS = build.vars['LDFLAGS'][0] + LDFLAGS
-    LDLIBS = build.vars['LDLIBS'][0] + LDLIBS
+    CXX = build.vars['CXX']
+    CXXFLAGS = build.vars['CXXFLAGS'] + CXXFLAGS
+    CPPFLAGS = build.vars['CPPFLAGS'] + CPPFLAGS
+    LDFLAGS = build.vars['LDFLAGS'] + LDFLAGS
+    LDLIBS = build.vars['LDLIBS'] + LDLIBS
     in_ = 'atto-test.cxx'
     ins = [in_]
     out = 'atto-test'
@@ -122,9 +122,9 @@ def try_compile_link_cxx(build, body, CXXFLAGS=[], CPPFLAGS=[], LDFLAGS=[], LDLI
 
 if 0:
     def try_linkonly_c(build, ins, LDFLAGS=[], LDLIBS=[]):
-        CC = build.vars['CC'][0]
-        LDFLAGS = build.vars['LDFLAGS'][0] + LDFLAGS
-        LDLIBS = build.vars['LDLIBS'][0] + LDLIBS
+        CC = build.vars['CC']
+        LDFLAGS = build.vars['LDFLAGS'] + LDFLAGS
+        LDLIBS = build.vars['LDLIBS'] + LDLIBS
         out = 'atto-test'
 
         args = CC + LDFLAGS + ins + LDLIBS + ['-o', out]
@@ -134,11 +134,11 @@ if 0:
             raise TestError(error)
 
 def try_compile_link2_c(build, body, CFLAGS=[], CPPFLAGS=[], LDFLAGS=[], LDLIBS=[]):
-    CC = build.vars['CC'][0]
-    CFLAGS = build.vars['CFLAGS'][0] + CFLAGS
-    CPPFLAGS = build.vars['CPPFLAGS'][0] + CPPFLAGS
-    LDFLAGS = build.vars['LDFLAGS'][0] + LDFLAGS
-    LDLIBS = build.vars['LDLIBS'][0] + LDLIBS
+    CC = build.vars['CC']
+    CFLAGS = build.vars['CFLAGS'] + CFLAGS
+    CPPFLAGS = build.vars['CPPFLAGS'] + CPPFLAGS
+    LDFLAGS = build.vars['LDFLAGS'] + LDFLAGS
+    LDLIBS = build.vars['LDLIBS'] + LDLIBS
     in_ = 'atto-test.c'
     ins = [in_]
     mid = 'atto-test.o'
@@ -160,9 +160,9 @@ def try_compile_link2_c(build, body, CFLAGS=[], CPPFLAGS=[], LDFLAGS=[], LDLIBS=
 
 if 0:
     def try_linkonly_cxx(build, ins, LDFLAGS=[], LDLIBS=[]):
-        CXX = build.vars['CXX'][0]
-        LDFLAGS = build.vars['LDFLAGS'][0] + LDFLAGS
-        LDLIBS = build.vars['LDLIBS'][0] + LDLIBS
+        CXX = build.vars['CXX']
+        LDFLAGS = build.vars['LDFLAGS'] + LDFLAGS
+        LDLIBS = build.vars['LDLIBS'] + LDLIBS
         out = 'atto-test'
 
         args = CXX + LDFLAGS + ins + LDLIBS + ['-o', out]
@@ -172,11 +172,11 @@ if 0:
             raise TestError(error)
 
 def try_compile_link2_cxx(build, body, CXXFLAGS=[], CPPFLAGS=[], LDFLAGS=[], LDLIBS=[]):
-    CXX = build.vars['CXX'][0]
-    CXXFLAGS = build.vars['CXXFLAGS'][0] + CXXFLAGS
-    CPPFLAGS = build.vars['CPPFLAGS'][0] + CPPFLAGS
-    LDFLAGS = build.vars['LDFLAGS'][0] + LDFLAGS
-    LDLIBS = build.vars['LDLIBS'][0] + LDLIBS
+    CXX = build.vars['CXX']
+    CXXFLAGS = build.vars['CXXFLAGS'] + CXXFLAGS
+    CPPFLAGS = build.vars['CPPFLAGS'] + CPPFLAGS
+    LDFLAGS = build.vars['LDFLAGS'] + LDFLAGS
+    LDLIBS = build.vars['LDLIBS'] + LDLIBS
     in_ = 'atto-test.cxx'
     ins = [in_]
     mid = 'atto-test.o'
