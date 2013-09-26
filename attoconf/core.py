@@ -17,7 +17,7 @@
 
 from __future__ import print_function, division, absolute_import
 
-from collections import namedtuple
+from collections import namedtuple, OrderedDict
 import os
 import sys
 
@@ -156,7 +156,7 @@ class Build(object):
         self.vars = {o.var: (o.init, 'default')
                 for o in project.options.itervalues()
                 if o.var is not None}
-        self._seen_args = []
+        self._seen_args = OrderedDict()
 
     def apply_arg(self, arg):
         ''' Parse a single argument, expanding aliases.
@@ -176,9 +176,11 @@ class Build(object):
                 raise ArgumentError('Unknown option %s' % arg)
             else:
                 raise ArgumentError('Unknown environment variable %s' % arg)
-        self._seen_args.append(arg)
 
         k, a = arg.split('=', 1)
+        if k in self._seen_args:
+            del self._seen_args[k]
+        self._seen_args[k] = a
         opt = self.project.options.get(k)
         if opt is None:
             raise sys.exit('Unknown option %s' % k)
@@ -194,14 +196,16 @@ class Build(object):
         # open fd to control +x mode
         status_fd = os.open(status_file, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0777)
         with os.fdopen(status_fd, 'w') as status:
+            print('Generating config.status')
             status.write('#!%s\n' % sys.executable)
             status.write('import os\n')
             status.write('import sys\n')
             status.write('old_build_dir = os.path.dirname(sys.argv[0])\n')
             status.write('configure = os.path.join(old_build_dir, %r, "configure")\n'
                     % self.relative_source())
+            seen_args = ['='.join(kv) for kv in self._seen_args.iteritems()]
             status.write('os.execvp(configure, [configure] + %r + sys.argv[1:])\n'
-                    % self._seen_args)
+                    % seen_args)
 
     def configure(self, args, env):
         ''' First apply variables from the environment,
