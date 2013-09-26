@@ -18,6 +18,7 @@
 from __future__ import print_function, division, absolute_import
 
 import os
+import sys
 
 from ..classy import ClassyProject
 from ..version import full_version
@@ -82,5 +83,7 @@ class Make(ClassyProject):
 
     def post(self):
         super(Make, self).post()
+        if 'SRC_DIR' in self.order:
+            sys.exit('ERROR: Incompatible generator hooks!')
         self.order.insert(0, 'SRC_DIR')
         self.checks.append(MakeHook(self.make_in, self.make_out))
