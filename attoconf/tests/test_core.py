@@ -129,8 +129,8 @@ General:
                 })
         self.assertEqual(build.vars,
                 {
-                    'FOO': ('B', 'command-line'),
-                    'BAR': (1, 'command-line'),
-                    'QUX': (None, 'default'),
-                    'VAR': ('value', 'environment'),
+                    'FOO': 'B',
+                    'BAR': 1,
+                    'QUX': None,
+                    'VAR': 'value',
                 })

@@ -11,7 +11,7 @@ minor = 8
 
 # Incremented if there is a bugfix release.
 # Might not be contiguous.
-patch = 1
+patch = 2
 
 # Reserved for distributors and forks.
 # Contains arbitrary text, but no parentheses or newlines.
