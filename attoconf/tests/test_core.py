@@ -22,6 +22,7 @@ import unittest
 from attoconf.core import Project, Build
 from attoconf.types import uint, shell_word, shell_partial_word
 
+import os
 from cStringIO import StringIO
 import sys
 
@@ -127,6 +128,7 @@ General:
                     'QUX': 'a',
                     '--qux': 'b',
                 })
+        os.remove('config.status')
         self.assertEqual(build.vars,
                 {
                     'FOO': 'B',
