@@ -22,19 +22,45 @@ import sys
 from . import _version
 
 if sys.version_info[0] != 2 or sys.version_info[1] < 7:
-    sys.exit('Unsupported Python version: %s\nRequire Python 2.7' % sys.version)
+    sys.exit('Unsupported Python version: %s\nattoconf requires Python 2.7' % sys.version)
 
 def require_version(major, minor, patch=0):
     ''' Check that this is the right version of attoconf, or die trying.
     '''
-
-    actual = 'Current version: ' + full_version
     if major != _version.major:
-        sys.exit('Unsupported major version: %d\n' % major + actual)
+        # Once I release attoconf 1.0, I *probably* won't ever
+        # do another major upgrade - that would be difficult to package.
+        sys.exit(
+'''
+This configure script requires a different major version of attoconf.
+Major version changes are rare, and software written against the one
+version is likely to need changes to work with the other version.
+
+Current version: %s
+Minimum required version: %d.%d.%d
+''' % (full_version, major, minor, patch))
     if minor > _version.minor:
-        sys.exit('Unsupported minor version: %d.%d\n' % (major, minor) + actual)
+        # In the interest of good style, it sometimes *should* be rewritten.
+        sys.exit(
+'''
+This configure script requires a newer minor version of attoconf.
+Minor version changes are common, and software written against the one
+minor version will work with all later minor versions.
+
+Current version: %s
+Minimum required version: %d.%d.%d
+''' % (full_version, major, minor, patch))
     if minor == _version.minor and patch > _version.patch:
-        sys.exit('Unsupported patch version: %d.%d.%d\n' % (major, minor, patch) + actual)
+        sys.exit(
+'''
+This configure script requires a newer patch version of attoconf.
+Patch versions are usually not released unless there is a bug in a minor
+version, but it is possible that someone is using experimental features.
+If there is one, upgrade to the latest minor version instead.
+
+Current version: %s
+Minimum required version: %d.%d.%d
+''' % (full_version, major, minor, patch))
 
 part_version = '%d.%d.%d' % (_version.major, _version.minor, _version.patch)
 full_version = 'attoconf %s (%s)' % (part_version, _version.distributor)
