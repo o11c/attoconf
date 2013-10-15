@@ -95,6 +95,7 @@ class ClassyProject(Project):
 
             Usually there is one or two of these for every program needed.
         '''
+        self.add_help('Environment Variables:', hidden=False)
 
     def features(self):
         ''' Customizations for this package (--enable-*).
