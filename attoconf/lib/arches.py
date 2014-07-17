@@ -18,21 +18,19 @@
 from __future__ import print_function, division, absolute_import
 
 from ..classy import ClassyProject
-from ..types import triple
+from ..types import triple, maybe
 
 
-# TODO: see if there's a way to expose them sanely, without using Nones
-# (currently I never emit them: instead I pop the order)
 def build(build, BUILD):
     pass
 
 def host(build, HOST):
-    if HOST is None:
+    if not HOST:
         BUILD = build.vars['BUILD']
         build.vars['HOST'] = BUILD
 
 def target(build, TARGET):
-    if TARGET is None:
+    if not TARGET:
         HOST = build.vars['HOST']
         build.vars['TARGET'] = HOST
 
@@ -42,24 +40,21 @@ class Arches2(ClassyProject):
     def arches(self):
         super(Arches2, self).arches()
         self.add_help('System types:', hidden=False)
-        self.add_option('--build', init=None,
-                type=triple, check=build,
+        self.add_option('--build', init='',
+                type=maybe(triple), check=build,
                 help='configure for building on BUILD', hidden=False,
                 help_def='native')
-        self.order.pop()
-        self.add_option('--host', init=None,
-                type=triple, check=host,
+        self.add_option('--host', init='',
+                type=maybe(triple), check=host,
                 help='cross-compile to build programs to run on HOST',
                 hidden=False, help_def='BUILD')
-        self.order.pop()
 
 # TODO figure out the mro implications when I use this
 class Arches3(Arches2):
     __slots__ = ()
     def arches(self):
         super(Arches3, self).arches()
-        self.add_option('--target', init=None,
-                type=triple, check=target,
+        self.add_option('--target', init='',
+                type=maybe(triple), check=target,
                 help='configure for building compilers for TARGET',
                 hidden=False, help_def='HOST')
-        self.order.pop()

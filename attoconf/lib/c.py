@@ -208,7 +208,12 @@ def cppflags(build, CPPFLAGS):
     pass
 
 def cc(build, CC):
-    pass
+    if CC.list == []:
+        HOST = build.vars['HOST']
+        if HOST:
+            build.vars['CC'].list = [HOST + '-gcc']
+        else:
+            build.vars['CC'].list = ['gcc']
 
 def cflags(build, CFLAGS):
     try_compile_c(build, 'int main() {}\n')
@@ -216,7 +221,12 @@ def cflags(build, CFLAGS):
     try_compile_link2_c(build, 'int main() {}\n')
 
 def cxx(build, CXX):
-    pass
+    if CXX.list == []:
+        HOST = build.vars['HOST']
+        if HOST:
+            build.vars['CXX'].list = [HOST + '-g++']
+        else:
+            build.vars['CXX'].list = ['g++']
 
 def cxxflags(build, CXXFLAGS):
     try_compile_cxx(build, 'int main() {}\n')
@@ -235,7 +245,7 @@ class Link(Arches2):
                 type=ShellList, check=libs,
                 help='libraries to pass to the linker, e.g. -l<library>',
                 hidden=False)
-        self.order.append('LDLIBS')
+        self.order.append('LDLIBS') #TODO remove for 1.0
 
 class Preprocess(Arches2):
     __slots__ = ()
@@ -250,9 +260,10 @@ class C(Link, Preprocess):
     __slots__ = ()
     def vars(self):
         super(C, self).vars()
-        self.add_option('CC', init=['gcc'],
+        self.add_option('CC', init=[],
                 type=ShellList, check=cc,
-                help='C compiler command', hidden=False)
+                help='C compiler command', hidden=False,
+                help_def='HOST-gcc')
         self.add_option('CFLAGS', init=['-O2', '-g'],
                 type=ShellList, check=cflags,
                 help='C compiler flags', hidden=False)
@@ -261,9 +272,10 @@ class Cxx(Link, Preprocess):
     __slots__ = ()
     def vars(self):
         super(Cxx, self).vars()
-        self.add_option('CXX', init=['g++'],
+        self.add_option('CXX', init=[],
                 type=ShellList, check=cxx,
-                help='C++ compiler command', hidden=False)
+                help='C++ compiler command', hidden=False,
+                help_def='HOST-g++')
         self.add_option('CXXFLAGS', init=['-O2', '-g'],
                 type=ShellList, check=cxxflags,
                 help='C++ compiler flags', hidden=False)

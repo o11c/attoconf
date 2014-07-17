@@ -51,6 +51,18 @@ class enum(object):
         raise ValueError('%r not in {%s}' % (s, ', '.join(self.args)))
 
 
+class maybe(object):
+    __slots__ = ('inferior')
+
+    def __init__(self, inferior):
+        self.inferior = inferior
+
+    def __call__(self, s):
+        if not s:
+            return s
+        return (self.inferior)(s)
+
+
 class ShellList(object):
     ''' An argument type representing a sequence of 0 or more arguments
     '''
@@ -96,9 +108,14 @@ def quoted_string(s):
 
 def filepath(s):
     s = trim_trailing_slashes(s)
-    # must be absolute *and* canonical
-    if s != os.path.abspath(s):
-        raise ValueError('Not an absolute, canonical pathname: %s' % s)
+    # must be absolute *and* canonical, except joinable
+    a = os.path.abspath(s)
+    if a == '/':
+        # filepaths often directly cat a subpath
+        # @me@/whatever is invalid if @me@ == /
+        a = '/.'
+    if s != a:
+        raise ValueError('Not an absolute, canonical (except joinable) pathname: %r != %r' % (s, a))
     return s
 
 

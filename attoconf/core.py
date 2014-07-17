@@ -103,8 +103,9 @@ class Project(object):
             # used by some tests ... should this be fixed there instead?
             if help_var is None:
                 help_var = var
-        if init is not None:
-            init = type(init)
+        assert init is not None
+        init = type(init)
+        assert init is not None
         self.options[name] = Option(init=init, type=type)
         if check is not None:
             self.order.append(var)
@@ -113,10 +114,11 @@ class Project(object):
 
         if help_var is None:
             help_var = var
+
         if help_def is None:
             help_def = init
-        if help_def is not None:
-            help = '%s [%s]' % (help, help_def)
+        assert help_def is not None
+        help = '%s [%s]' % (help, help_def)
 
         if help_var != name:
             help_opt = '%s=%s' % (name, help_var)
@@ -127,12 +129,14 @@ class Project(object):
     def do_help(self, opt):
         ''' Pseudo type-hook to be registered for --help (calls sys.exit).
         '''
+        if opt == 'none':
+            return opt
         if opt == 'default':
             hidden = False
         elif opt == 'hidden':
             hidden = True
         else:
-            raise ValueError
+            raise ValueError('Unknown value for opt: %r' % opt)
         self.help.print(sys.stdout, hidden)
         sys.exit()
 # sneaky

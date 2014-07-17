@@ -20,7 +20,7 @@ from __future__ import print_function, division, absolute_import
 import unittest
 
 from attoconf.core import Project, Build
-from attoconf.types import uint, shell_word, shell_partial_word
+from attoconf.types import uint, shell_word, shell_partial_word, maybe
 
 import os
 from cStringIO import StringIO
@@ -44,7 +44,7 @@ class TestProject(unittest.TestCase):
         proj.add_help('General:', False)
         proj.add_alias('--help', ['--help=default'],
                 help='display standard help, then exit', hidden=False)
-        proj.add_option('--help', init=None,
+        proj.add_option('--help', init='none',
                 type=proj.do_help, check=None,
                 help='display some subset of help', hidden=False,
                 help_var='TYPE')
@@ -54,8 +54,8 @@ class TestProject(unittest.TestCase):
         proj.add_option('--foo', init='asdf',
                 type=shell_word, check=None,
                 help='set frob target', hidden=False)
-        proj.add_option('--bar', init=None,
-                type=shell_word, check=None,
+        proj.add_option('--bar', init='',
+                type=maybe(shell_word), check=None,
                 help='set frob source', hidden=False,
                 help_def='FOO')
 
@@ -68,7 +68,7 @@ class TestProject(unittest.TestCase):
         self.assertEqual(out.getvalue(), '''
 General:
   --help       display standard help, then exit
-  --help=TYPE  display some subset of help
+  --help=TYPE  display some subset of help [none]
   --foo=FOO    set frob target [asdf]
   --bar=BAR    set frob source [FOO]
 
@@ -81,7 +81,7 @@ General:
         self.assertEqual(out.getvalue(), '''
 General:
   --help         display standard help, then exit
-  --help=TYPE    display some subset of help
+  --help=TYPE    display some subset of help [none]
   --help=hidden  display help you should never ever ever care about
   --foo=FOO      set frob target [asdf]
   --bar=BAR      set frob source [FOO]
@@ -101,22 +101,23 @@ General:
         def check_bar(bld, BAR):
             self.assertEqual(BAR, 1)
         def check_qux(bld, QUX):
-            self.assertEqual(QUX, None)
+            self.assertEqual(QUX, '')
         def check_var(bld, VAR):
             self.assertEqual(VAR, 'value')
 
         proj = Project('.')
         proj.add_alias('--alias', ['--foo=A', '--bar=1', '--foo=B'],
                 help=None, hidden=False)
-        proj.add_option('--foo', init=None,
+        proj.add_option('--foo', init='X',
                 type=shell_word, check=check_foo,
                 help='help for string foo', hidden=False)
         proj.add_option('--bar', init=0,
                 type=uint, check=check_bar,
                 help='help for int bar', hidden=False)
-        proj.add_option('--qux', init=None,
-                type=uint, check=check_qux,
-                help='help for int qux', hidden=False)
+        proj.add_option('--qux', init='',
+                type=maybe(uint), check=check_qux,
+                help='help for int qux', hidden=False,
+                help_def='auto')
         proj.add_option('VAR', init='',
                 type=shell_partial_word, check=check_var,
                 help='help for string VAR', hidden=False)
@@ -133,6 +134,6 @@ General:
                 {
                     'FOO': 'B',
                     'BAR': 1,
-                    'QUX': None,
+                    'QUX': '',
                     'VAR': 'value',
                 })

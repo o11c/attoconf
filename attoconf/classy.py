@@ -68,9 +68,9 @@ class ClassyProject(Project):
         self.add_help('General:', hidden=False)
         self.add_alias('--help', ['--help=default'],
                 help='display standard help, then exit', hidden=False)
-        self.add_option('--help', init=None,
+        self.add_option('--help', init='none',
                 type=self.do_help, check=None,
-                help='display some kind of help', hidden=False,
+                help='just display some kind of help instead of configuring', hidden=False,
                 help_var='KIND')
         self.help.add_option('--help=hidden',
                 help='display help you should never ever ever care about',
