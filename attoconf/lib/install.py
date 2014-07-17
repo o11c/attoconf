@@ -1,4 +1,4 @@
-#   Copyright 2013 Ben Longbons <b.r.longbons@gmail.com>
+#   Copyright 2013-2014 Ben Longbons <b.r.longbons@gmail.com>
 #
 #   This file is part of attoconf.
 #
@@ -141,11 +141,7 @@ def psdir(build, DIR):
 
 class Install(ClassyProject):
     __slots__ = ()
-
-    @classmethod
-    def slots(cls):
-        return super(Install, cls).slots() + (
-                'package', 'package_name')
+    _merge_slots_ = ('package', 'package_name')
 
     # Compatibility with configure written for attoconf < 0.7
     # In attoconf 1.0, the positional srcdir argument will go away,

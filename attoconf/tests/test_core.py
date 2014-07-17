@@ -1,4 +1,4 @@
-#   Copyright 2013 Ben Longbons <b.r.longbons@gmail.com>
+#   Copyright 2013-2014 Ben Longbons <b.r.longbons@gmail.com>
 #
 #   This file is part of attoconf.
 #

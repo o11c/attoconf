@@ -1,4 +1,4 @@
-#   Copyright 2013 Ben Longbons <b.r.longbons@gmail.com>
+#   Copyright 2013-2014 Ben Longbons <b.r.longbons@gmail.com>
 #
 #   This file is part of attoconf.
 #
@@ -62,9 +62,7 @@ class Make(ClassyProject):
     ''' Post hook to generate a Makefile from Makefile.in
     '''
     __slots__ = ()
-    @classmethod
-    def slots(cls):
-        return super(Make, cls).slots() + ('make_in', 'make_out')
+    _merge_slots_ = ('make_in', 'make_out')
 
     # compatibility with attoconf < 0.7
     def __init__(self, srcdir,

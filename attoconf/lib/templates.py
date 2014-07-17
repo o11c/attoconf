@@ -1,4 +1,4 @@
-#   Copyright 2013 Ben Longbons <b.r.longbons@gmail.com>
+#   Copyright 2013-2014 Ben Longbons <b.r.longbons@gmail.com>
 #
 #   This file is part of attoconf.
 #
@@ -62,9 +62,7 @@ class Templates(ClassyProject):
     ''' Post hook to generate output files from *.in templates
     '''
     __slots__ = ()
-    @classmethod
-    def slots(cls):
-        return super(Templates, cls).slots() + ('template_files',)
+    _merge_slots_ = ('template_files')
 
     # this class didn't exist in attoconf < 0.7, no need for compatibility
     def __init__(self, template_files, **kwargs):

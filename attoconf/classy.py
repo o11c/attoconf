@@ -1,4 +1,4 @@
-#   Copyright 2013 Ben Longbons <b.r.longbons@gmail.com>
+#   Copyright 2013-2014 Ben Longbons <b.r.longbons@gmail.com>
 #
 #   This file is part of attoconf.
 #
@@ -19,24 +19,33 @@ from __future__ import print_function, division, absolute_import
 
 from .core import Project, Build
 
-# TODO: put this in a metaclass
-# some of the init/jiggle logic would also be simplified by a metaclass
+class PolymorphicSlotMergerMetaclass(type):
+
+    def __new__(meta, name, bases, dct):
+        if '__slots__' not in dct:
+            s = ()
+            for b in bases:
+                s2 = b.__dict__.get('_merge_slots_', ())
+                if isinstance(s2, basestring):
+                    s2 = (s2,)
+                s += s2
+            s += dct.get('_merge_slots_', ())
+            dct['__slots__'] = s
+        else:
+            assert dct['__slots__'] == ()
+        return type.__new__(meta, name, bases, dct)
+
+
+# TODO: remove this for 1.0
 def add_slots(cls):
-    ''' A decorator that fixes __slots__ after multiple inheritance.
-    '''
-    return type(cls.__name__, cls.__bases__,
-            dict(cls.__dict__, __slots__=cls.slots()))
+    return cls
 
 class ClassyProject(Project):
     ''' A more convenient, objectish, way of setting up a project.
     '''
     __slots__ = ()
-    @classmethod
-    def slots(self):
-        ''' slots don't work too well with multiple inheritance,
-            so make the most-derived class create all the slots
-        '''
-        return ()
+    _merge_slots_ = ()
+    __metaclass__ = PolymorphicSlotMergerMetaclass
 
     def __init__(self, srcdir):
         super(ClassyProject, self).__init__(srcdir)
