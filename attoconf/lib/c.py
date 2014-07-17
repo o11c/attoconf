@@ -75,17 +75,17 @@ def try_compile_c(build, body, CFLAGS=[], CPPFLAGS=[]):
     if status:
         raise TestError(error)
 
-def try_compile_link_c(build, body, CFLAGS=[], CPPFLAGS=[], LDFLAGS=[], LDLIBS=[]):
+def try_compile_link_c(build, body, CFLAGS=[], CPPFLAGS=[], LDFLAGS=[], LIBS=[]):
     CC = build.vars['CC']
     CFLAGS = build.vars['CFLAGS'] + CFLAGS
     CPPFLAGS = build.vars['CPPFLAGS'] + CPPFLAGS
     LDFLAGS = build.vars['LDFLAGS'] + LDFLAGS
-    LDLIBS = build.vars['LDLIBS'] + LDLIBS
+    LIBS = build.vars['LIBS'] + LIBS
     in_ = 'atto-test.c'
     ins = [in_]
     out = 'atto-test'
 
-    args = CC + CFLAGS + CPPFLAGS + LDFLAGS + ins + LDLIBS + ['-o', out]
+    args = CC + CFLAGS + CPPFLAGS + LDFLAGS + ins + LIBS + ['-o', out]
     with TempFile(in_, body), TempFile(out, None):
         status, error = do_exec(build, args)
     if status:
@@ -104,41 +104,41 @@ def try_compile_cxx(build, body, CXXFLAGS=[], CPPFLAGS=[]):
     if status:
         raise TestError(error)
 
-def try_compile_link_cxx(build, body, CXXFLAGS=[], CPPFLAGS=[], LDFLAGS=[], LDLIBS=[]):
+def try_compile_link_cxx(build, body, CXXFLAGS=[], CPPFLAGS=[], LDFLAGS=[], LIBS=[]):
     CXX = build.vars['CXX']
     CXXFLAGS = build.vars['CXXFLAGS'] + CXXFLAGS
     CPPFLAGS = build.vars['CPPFLAGS'] + CPPFLAGS
     LDFLAGS = build.vars['LDFLAGS'] + LDFLAGS
-    LDLIBS = build.vars['LDLIBS'] + LDLIBS
+    LIBS = build.vars['LIBS'] + LIBS
     in_ = 'atto-test.cxx'
     ins = [in_]
     out = 'atto-test'
 
-    args = CXX + CXXFLAGS + CPPFLAGS + LDFLAGS + ins + LDLIBS + ['-o', out]
+    args = CXX + CXXFLAGS + CPPFLAGS + LDFLAGS + ins + LIBS + ['-o', out]
     with TempFile(in_, body), TempFile(out, None):
         status, error = do_exec(build, args)
     if status:
         raise TestError(error)
 
 if 0:
-    def try_linkonly_c(build, ins, LDFLAGS=[], LDLIBS=[]):
+    def try_linkonly_c(build, ins, LDFLAGS=[], LIBS=[]):
         CC = build.vars['CC']
         LDFLAGS = build.vars['LDFLAGS'] + LDFLAGS
-        LDLIBS = build.vars['LDLIBS'] + LDLIBS
+        LIBS = build.vars['LIBS'] + LIBS
         out = 'atto-test'
 
-        args = CC + LDFLAGS + ins + LDLIBS + ['-o', out]
+        args = CC + LDFLAGS + ins + LIBS + ['-o', out]
         with TempFile(out, None):
             status, error = do_exec(build, args)
         if status:
             raise TestError(error)
 
-def try_compile_link2_c(build, body, CFLAGS=[], CPPFLAGS=[], LDFLAGS=[], LDLIBS=[]):
+def try_compile_link2_c(build, body, CFLAGS=[], CPPFLAGS=[], LDFLAGS=[], LIBS=[]):
     CC = build.vars['CC']
     CFLAGS = build.vars['CFLAGS'] + CFLAGS
     CPPFLAGS = build.vars['CPPFLAGS'] + CPPFLAGS
     LDFLAGS = build.vars['LDFLAGS'] + LDFLAGS
-    LDLIBS = build.vars['LDLIBS'] + LDLIBS
+    LIBS = build.vars['LIBS'] + LIBS
     in_ = 'atto-test.c'
     ins = [in_]
     mid = 'atto-test.o'
@@ -146,7 +146,7 @@ def try_compile_link2_c(build, body, CFLAGS=[], CPPFLAGS=[], LDFLAGS=[], LDLIBS=
     out = 'atto-test'
 
     args1 = CC + CFLAGS + CPPFLAGS + ['-c', '-o', mid, in_]
-    args2 = CC + LDFLAGS + mids + LDLIBS + ['-o', out]
+    args2 = CC + LDFLAGS + mids + LIBS + ['-o', out]
     with TempFile(mid, None):
         with TempFile(in_, body):
             status, error = do_exec(build, args1)
@@ -159,24 +159,24 @@ def try_compile_link2_c(build, body, CFLAGS=[], CPPFLAGS=[], LDFLAGS=[], LDLIBS=
             raise TestError(error)
 
 if 0:
-    def try_linkonly_cxx(build, ins, LDFLAGS=[], LDLIBS=[]):
+    def try_linkonly_cxx(build, ins, LDFLAGS=[], LIBS=[]):
         CXX = build.vars['CXX']
         LDFLAGS = build.vars['LDFLAGS'] + LDFLAGS
-        LDLIBS = build.vars['LDLIBS'] + LDLIBS
+        LIBS = build.vars['LIBS'] + LIBS
         out = 'atto-test'
 
-        args = CXX + LDFLAGS + ins + LDLIBS + ['-o', out]
+        args = CXX + LDFLAGS + ins + LIBS + ['-o', out]
         with TempFile(out, None):
             status, error = do_exec(build, args)
         if status:
             raise TestError(error)
 
-def try_compile_link2_cxx(build, body, CXXFLAGS=[], CPPFLAGS=[], LDFLAGS=[], LDLIBS=[]):
+def try_compile_link2_cxx(build, body, CXXFLAGS=[], CPPFLAGS=[], LDFLAGS=[], LIBS=[]):
     CXX = build.vars['CXX']
     CXXFLAGS = build.vars['CXXFLAGS'] + CXXFLAGS
     CPPFLAGS = build.vars['CPPFLAGS'] + CPPFLAGS
     LDFLAGS = build.vars['LDFLAGS'] + LDFLAGS
-    LDLIBS = build.vars['LDLIBS'] + LDLIBS
+    LIBS = build.vars['LIBS'] + LIBS
     in_ = 'atto-test.cxx'
     ins = [in_]
     mid = 'atto-test.o'
@@ -184,7 +184,7 @@ def try_compile_link2_cxx(build, body, CXXFLAGS=[], CPPFLAGS=[], LDFLAGS=[], LDL
     out = 'atto-test'
 
     args1 = CXX + CXXFLAGS + CPPFLAGS + ['-c', '-o', mid, in_]
-    args2 = CXX + LDFLAGS + mids + LDLIBS + ['-o', out]
+    args2 = CXX + LDFLAGS + mids + LIBS + ['-o', out]
     with TempFile(mid, None):
         with TempFile(in_, body):
             status, error = do_exec(build, args1)
@@ -200,8 +200,9 @@ def try_compile_link2_cxx(build, body, CXXFLAGS=[], CPPFLAGS=[], LDFLAGS=[], LDL
 def ldflags(build, LDFLAGS):
     pass
 
-def libs(build, LDLIBS):
-    pass
+def libs(build, LIBS):
+    # compatibility
+    build.vars['LDLIBS'] = LIBS
 
 def cppflags(build, CPPFLAGS):
     pass
@@ -233,7 +234,8 @@ class Link(Arches2):
         self.add_option('LIBS', init=[],
                 type=ShellList, check=libs,
                 help='libraries to pass to the linker, e.g. -l<library>',
-                hidden=False, var='LDLIBS')
+                hidden=False)
+        self.order.append('LDLIBS')
 
 class Preprocess(Arches2):
     __slots__ = ()

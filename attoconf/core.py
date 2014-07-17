@@ -24,7 +24,7 @@ import sys
 from .help import Help
 
 # Nothing to see here. Move along.
-Option = namedtuple('Option', ['type', 'init', 'var'])
+Option = namedtuple('Option', ['type', 'init'])
 class ArgumentError(Exception): pass
 
 def as_var(name):
@@ -78,7 +78,7 @@ class Project(object):
         self.help.add_option(key, help, hidden)
 
     def add_option(self, name, init, type, check,
-            help, hidden, var=None,
+            help, hidden,
             help_var=None, help_def=None):
         ''' Add an actual option.
 
@@ -96,17 +96,16 @@ class Project(object):
         '''
         if name in self.options:
             raise KeyError(name)
+        var = as_var(name)
         if check is not None:
             assert type.__module__ == 'attoconf.types'
-            if var is None:
-                var = as_var(name)
         else:
             # used by some tests ... should this be fixed there instead?
             if help_var is None:
-                help_var = as_var(name)
+                help_var = var
         if init is not None:
             init = type(init)
-        self.options[name] = Option(init=init, type=type, var=var)
+        self.options[name] = Option(init=init, type=type)
         if check is not None:
             self.order.append(var)
             self.checks.append(
@@ -153,9 +152,8 @@ class Build(object):
         '''
         self.project = project
         self.builddir = trim_trailing_slashes(builddir)
-        self.vars = {o.var: o.init
-                for o in project.options.itervalues()
-                if o.var is not None}
+        self.vars = {as_var(k): o.init
+                for (k, o) in project.options.iteritems()}
         self._seen_args = OrderedDict()
 
     def apply_arg(self, arg):
@@ -184,7 +182,7 @@ class Build(object):
         opt = self.project.options.get(k)
         if opt is None:
             raise sys.exit('Unknown option %s' % k)
-        self.vars[opt.var] = opt.type(a)
+        self.vars[as_var(k)] = opt.type(a)
 
     def finish(self):
         ''' With the current set of variables, run all the checks
@@ -218,7 +216,7 @@ class Build(object):
             if val is not None:
                 self._seen_args[k] = val
                 opt = self.project.options[k]
-                self.vars[opt.var] = opt.type(val)
+                self.vars[as_var(k)] = opt.type(val)
 
         for arg in args:
             self.apply_arg(arg)

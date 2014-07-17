@@ -35,7 +35,8 @@ def prefix(build, PREFIX):
 def exec_prefix(build, EPREFIX):
     if EPREFIX is None:
         PREFIX = build.vars['PREFIX']
-        build.vars['EPREFIX'] = PREFIX
+        build.vars['EXEC_PREFIX'] = PREFIX
+    build.vars['EPREFIX'] = build.vars['EXEC_PREFIX']
 
 def bindir(build, DIR):
     if DIR is None:
@@ -182,7 +183,8 @@ class Install(ClassyProject):
                 type=filepath, check=exec_prefix,
                 help='install architecture-dependent files in EPREFIX',
                 hidden=False,
-                var='EPREFIX', help_def='PREFIX')
+                help_var='EPREFIX', help_def='PREFIX')
+        self.order.append('EPREFIX')
         self.order.append(None)
 
         self.add_help('Fine tuning of the installation directories:',
