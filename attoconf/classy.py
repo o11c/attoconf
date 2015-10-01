@@ -1,4 +1,4 @@
-#   Copyright 2013-2014 Ben Longbons <b.r.longbons@gmail.com>
+#   Copyright 2013-2015 Ben Longbons <b.r.longbons@gmail.com>
 #
 #   This file is part of attoconf.
 #
@@ -35,6 +35,12 @@ class PolymorphicSlotMergerMetaclass(type):
             assert dct['__slots__'] == ()
         return type.__new__(meta, name, bases, dct)
 
+    # TODO: remove *args for 1.0
+    def __call__(cls, *args, **kwargs):
+        instance = type.__call__(cls, *args, **kwargs)
+        instance._do_jiggle()
+        return instance
+
 
 # TODO: remove this for 1.0
 def add_slots(cls):
@@ -50,7 +56,11 @@ class ClassyProject(Project):
     def __init__(self, srcdir):
         super(ClassyProject, self).__init__(srcdir)
 
+    # TODO: remove this for 1.0
     def jiggle(self):
+        pass
+
+    def _do_jiggle(self):
         self.order.append(None)
         self.general()
         self.order.append(None)
