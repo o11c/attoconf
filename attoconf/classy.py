@@ -38,7 +38,9 @@ class PolymorphicSlotMergerMetaclass(type):
     # TODO: remove *args for 1.0
     def __call__(cls, *args, **kwargs):
         instance = type.__call__(cls, *args, **kwargs)
-        instance._do_jiggle()
+        if 'package' in kwargs or not isinstance(instance,
+                __import__('attoconf.lib.install', fromlist=['Install']).Install):
+            instance._do_jiggle()
         return instance
 
 

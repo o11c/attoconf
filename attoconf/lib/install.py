@@ -152,8 +152,12 @@ class Install(ClassyProject):
         self.set_package(package, package_name)
 
     def set_package(self, package, package_name):
+        if package is not None:
+            assert self.package is None
         self.package = package
         self.package_name = package_name
+        if package is not None:
+            self._do_jiggle()
 
     def general(self):
         super(Install, self).general()
